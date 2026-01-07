@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+:root {
+  --darkest-gray: #0B0B0B;
+  --transparent-darkest-gray: #0b0b0be0;
+  --gray-text: #9C9C9C;
+  --gray: #1E1E1E;
+  --light-gray: #CCCCCC;
+  --dark-red: #4E1000;
+  --bright-red: #FF0000;
+  --dark-green: #214D1F;
+  --electric-blue: #0099FF;
+}
+
+@theme inline {
+  --color-darkest-gray: var(--darkest-gray);
+  --color-transparent-darkest-gray: var(--transparent-darkest-gray);
+  --color-gray-text: var(--gray-text);
+  --color-gray: var(--gray);
+  --color-light-gray: var(--light-gray);
+  --color-dark-red: var(--dark-red);
+  --color-bright-red: var(--bright-red);
+  --color-dark-green: var(--dark-green);
+  --color-electric-blue: var(--electric-blue);
+  --font-family-sans: var(--font-manrope);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: var(--font-manrope);
+  background-color: var(--darkest-gray);
+  overflow-x: hidden;
+}
+
+/* estilos del toast */
+li[data-sonner-toast][data-type="success"] {
+  background: var(--dark-green) !important;
+}
+
+li[data-sonner-toast][data-type="error"] {
+  background: var(--dark-red) !important;
+}
