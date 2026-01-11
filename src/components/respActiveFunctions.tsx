@@ -16,11 +16,11 @@ export default function activeFunctions({ shows, setSelectedShow, selectedShow, 
             shows.map((show: ShowTypes, index: number) => {
               return (
                 <ActiveShow
-                  key={show.id}
+                  key={show.showid}
                   index={index + 1}
                   show={show}
                   setSelectedShow={setSelectedShow}
-                  isSelected={selectedShow?.id === show.id}
+                  isSelected={selectedShow?.showid === show.showid}
                 />
               )
             })
