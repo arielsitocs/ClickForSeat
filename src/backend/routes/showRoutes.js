@@ -1,0 +1,29 @@
+import express from "express";
+
+import prisma from "../config/db.js";
+
+const router = express.Router();
+
+router.get("/getAll", async (req, res) => {
+  try {
+    const response = await prisma.show.findMany({
+      where: {
+        saloonid: {
+          not: null
+        }
+      },
+      include: {
+        saloon: true
+      }
+    });
+    if (response) {
+      res.status(200).json(response);
+    } else {
+      res.status(404).json({ message: "No se encontraron funciones" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: `Error del servidor al traer las funciones: ${error}` });
+  }
+})
+
+export default router;

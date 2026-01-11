@@ -12,7 +12,7 @@ export default function Show({ show, index, setSelectedShow, isSelected }: ShowT
                 <h2>{index})</h2>
             </div>
             <div className="ml-1 bg-gray px-3 py-2 rounded-[5px] w-full">
-                {show.title} ({show.year}) - Sala {show.saloon}
+                {show.title} ({show.year}) - {show.saloon.saloonname}
             </div>
         </div>
     )

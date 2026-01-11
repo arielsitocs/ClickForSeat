@@ -1,7 +1,7 @@
 interface SeatTypes {
-  id?: number;
-  seatNumber?: number;
-  saloonId?: number;
+  seatid?: number;
+  seatnumber?: number;
+  saloonid?: number;
   status?: 'avaliable' | 'reserved' | 'unavailable';
   selected?: boolean;
   selectedSeats: SeatTypes[];

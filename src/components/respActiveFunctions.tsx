@@ -11,7 +11,7 @@ export default function activeFunctions({ shows, setSelectedShow, selectedShow, 
         <div className='flex items-center w-full justify-center mb-3'>
           <h1 className='text-gray-text font-bold ml-3 mr-3 text-md md:text-xl'>Funciones Activas</h1>
         </div>
-        <div className='w-[90%]'>
+        <div className='w-[95%]'>
           {
             shows.map((show: ShowTypes, index: number) => {
               return (

@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model saloon {
+  saloonid    Int    @id @default(autoincrement())
+  saloonname  String @db.VarChar
+  seatsnumber Int
+  seat        seat[]
+  show        show[]
+}
+
+model seat {
+  seatid     Int     @id @default(autoincrement())
+  seatnumber Int
+  status     String  @default("Available") @db.VarChar
+  saloonid   Int?
+  saloon     saloon? @relation(fields: [saloonid], references: [saloonid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model show {
+  showid        Int     @id @default(autoincrement())
+  title         String  @db.VarChar
+  year          Int
+  schedulebegin String  @db.VarChar
+  scheduleend   String  @db.VarChar
+  saloonid      Int?
+  saloon        saloon? @relation(fields: [saloonid], references: [saloonid], onDelete: NoAction, onUpdate: NoAction)
+}

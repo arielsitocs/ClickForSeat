@@ -1,11 +1,11 @@
 interface ShowTypes {
     index?: number,
-    id?: number,
+    showid?: number,
     title?: string,
     scheduleBegin?: string,
     scheduleEnd?: string,
     year?: number,
-    saloon?: number,
+    saloon?: any,
     show?: any,
     setSelectedShow?: any,
     isSelected?: boolean

@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${manRope.variable} antialiased`}
+        className={`${manRope.variable} antialiased min-h-screen flex flex-col`}
       >
         <Toaster
           richColors={false}

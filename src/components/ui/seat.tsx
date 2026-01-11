@@ -14,7 +14,7 @@ export default function Seat({ seat, selectedSeats, setSelectedSeats }: SeatType
     if (seat.status === 'unavailable') {
       toast.warning('Asiento ya reservado')
     } else if (seat.selected === true) {
-      const updatedSeats = selectedSeats?.filter((s) => s.id === seat.id) || []; // Encontramos asiento para eliminar ese objeto del array si selected es true //
+      const updatedSeats = selectedSeats?.filter((s) => s.seatid === seat.seatid) || []; // Encontramos asiento para eliminar ese objeto del array si selected es true //
       setSelectedSeats(updatedSeats);
       seat.selected = false;
     } else {
@@ -30,7 +30,7 @@ export default function Seat({ seat, selectedSeats, setSelectedSeats }: SeatType
     ${seat.status === 'reserved' ? 'bg-dark-green' : seat.status === 'unavailable' ? 'bg-dark-red' : 'bg-gray'} ${seat.selected === true ? '!bg-electric-blue' : 'border-none'}`}
       onClick={handleSeatSelection}>
       <Image src={SeatIcon} alt="seat" width={36} height={36} />
-      <p className="ml-1">{seat.number}</p>
+      <p className="ml-1">{seat.seatnumber}</p>
     </div>
   )
 }
