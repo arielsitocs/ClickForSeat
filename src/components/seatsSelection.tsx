@@ -17,7 +17,7 @@ export default function SeatsSelection({ show }: any) {
 
   const getSeats = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/api/seats/getAll`)
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"}/api/seats/getAll`)
       if (response.ok) {
         const data = await response.json()
         setSeats(data)
