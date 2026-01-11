@@ -8,6 +8,7 @@
     "server": "nodemon src/backend/server.js",
     "build": "next build",
     "start": "next start",
+    "start:backend": "npx prisma generate && npx prisma db push --accept-data-loss && node src/backend/server.js",
     "lint": "eslint"
   },
   "dependencies": {
