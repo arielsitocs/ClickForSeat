@@ -11,7 +11,7 @@ export default function activeFunctions({ setSelectedShow, selectedShow }: any) 
 
     const getActiveFunctions = async () => {
         try {
-            const response = await fetch("http://localhost:4000/api/shows/getAll")
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"}/api/shows/getAll`)
             if (response.ok) {
                 const data = await response.json()
                 setActiveFunctions(data)

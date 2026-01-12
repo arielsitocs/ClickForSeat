@@ -1,37 +1,37 @@
-DROP TABLE IF EXISTS saloon;
-DROP TABLE IF EXISTS show;
-DROP TABLE IF EXISTS seat;
+-- DROP TABLE IF EXISTS saloon;
+-- DROP TABLE IF EXISTS show;
+-- DROP TABLE IF EXISTS seat;
 
-CREATE TABLE saloon (
-	saloonId SERIAL PRIMARY KEY,
-	saloonName VARCHAR NOT NULL,
-	seatsNumber INT NOT NULL
-)
+-- CREATE TABLE saloon (
+-- 	saloonId SERIAL PRIMARY KEY,
+-- 	saloonName VARCHAR NOT NULL,
+-- 	seatsNumber INT NOT NULL
+-- );
 
-SELECT * FROM saloon;
+-- SELECT * FROM saloon;
 
-CREATE TABLE seat (
-	seatId SERIAL PRIMARY KEY,
-	seatNumber INT NOT NULL,
-	seatPrice INT DEFAULT 5500 NOT NULL,
-	status VARCHAR DEFAULT 'Available' NOT NULL,
-	saloonId INT,
-	FOREIGN KEY (saloonId) REFERENCES saloon(saloonId)
-);
+-- CREATE TABLE seat (
+-- 	seatId SERIAL PRIMARY KEY,
+-- 	seatNumber INT NOT NULL,
+-- 	seatPrice INT DEFAULT 5500 NOT NULL,
+-- 	status VARCHAR DEFAULT 'Available' NOT NULL,
+-- 	saloonId INT,
+-- 	FOREIGN KEY (saloonId) REFERENCES saloon(saloonId)
+-- );
 
-SELECT * FROM seat;
+-- SELECT * FROM seat;
 
-CREATE TABLE show (
-	showId SERIAL PRIMARY KEY,
-	title VARCHAR NOT NULL,
-	year INT NOT NULL,
-	scheduleBegin VARCHAR NOT NULL,
-	scheduleEnd VARCHAR NOT NULL,
-	saloonId INT,
-	FOREIGN KEY (saloonId) REFERENCES  saloon(saloonId)
-);
+-- CREATE TABLE show (
+-- 	showId SERIAL PRIMARY KEY,
+-- 	title VARCHAR NOT NULL,
+-- 	year INT NOT NULL,
+-- 	scheduleBegin VARCHAR NOT NULL,
+-- 	scheduleEnd VARCHAR NOT NULL,
+-- 	saloonId INT,
+-- 	FOREIGN KEY (saloonId) REFERENCES  saloon(saloonId)
+-- );
 
-SELECT * FROM show;
+-- SELECT * FROM show;
 
 INSERT INTO saloon (saloonName, seatsNumber) VALUES 
     ('Sala 1', 50),        -- ID 1
@@ -60,4 +60,3 @@ FROM
     saloon sa
 CROSS JOIN LATERAL 
     generate_series(1, sa.seatsNumber) AS serie(numero);
-	
