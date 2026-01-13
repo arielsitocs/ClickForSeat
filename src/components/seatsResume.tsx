@@ -4,34 +4,72 @@ import SeatTypes from "../types/seat";
 
 import ResumeSeat from "./ui/resumeSeat";
 import Button from "./ui/button";
+import Loader from "./ui/loader";
+
+import { toast } from 'sonner';
 
 import { useState, useEffect } from "react";
 
 interface SeatsResumeTypes {
     status: boolean,
     setStatus: (status: boolean) => void
-    seats: any[]
+    selectedSeats: any[]
     setSelectedSeats: (seats: any[]) => void
     show: any
+    refreshSeats: () => void
 }
 
-export default function SeatsResume({ status, setStatus, seats, setSelectedSeats, show }: SeatsResumeTypes) {
+export default function SeatsResume({ status, setStatus, selectedSeats, setSelectedSeats, show, refreshSeats }: SeatsResumeTypes) {
     const [total, setTotal] = useState(0);
+    const [seatIds, setSeatIds] = useState<number[]>([]);
+    const [loading, setLoading] = useState(false);
     const seatPrice = 5990;
     const iva = 0.19;
 
     const calculateTotal = () => {
-        setTotal(Math.round(seats.length * seatPrice));
+        setTotal(Math.round(selectedSeats.length * seatPrice));
+    }
+
+    const handleDeleteSeat = (id: number) => {
+        const newSeats = selectedSeats.filter((seat: SeatTypes) => seat.seatid !== id);
+        setSelectedSeats(newSeats);
+        getSeatsIds();
+    }
+
+    const getSeatsIds = () => {
+        const ids = selectedSeats.map((seat: any) => seat.seatid);
+        setSeatIds(ids);
     }
 
     useEffect(() => {
         calculateTotal();
-    }, [seats]);
+        getSeatsIds();
+    }, [selectedSeats]);
 
-    const handleDeleteSeat = (id: number) => {
-        const newSeats = seats.filter((seat: SeatTypes) => seat.seatid !== id);
-        setSelectedSeats(newSeats);
+    const handleConfirm = async () => {
+        try {
+            setLoading(true);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/seats/updateMany`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ ids: seatIds })
+            })
+            if (response.ok) {
+                const data = await response.json()
+                toast.success(data.message)
+                refreshSeats();
+                setStatus(false)
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error(`Error al reservar los asientos: ${error}`)
+        } finally {
+            setLoading(false);
+        }
     }
+
 
     return (
         status ? (
@@ -43,10 +81,10 @@ export default function SeatsResume({ status, setStatus, seats, setSelectedSeats
                         <h1 className="text-center bg-darkest-gray p-4 lg:w-[40%] md:w-[60%] w-[80%] rounded-[5px] font-bold">Asientos Seleccionados</h1>
                         <div className="grid  grid-cols-3 md:grid-cols-4 mt-4 w-[100%] gap-2">
                             {
-                                seats?.map((seat: SeatTypes) => {
+                                selectedSeats?.map((seat: SeatTypes) => {
                                     return (
                                         <div key={seat.seatid} className="flex items-center justify-center">
-                                            <ResumeSeat seat={seat} selectedSeats={seats} setSelectedSeats={setSelectedSeats} deleteSeat={handleDeleteSeat} />
+                                            <ResumeSeat seat={seat} selectedSeats={selectedSeats} setSelectedSeats={setSelectedSeats} deleteSeat={handleDeleteSeat} />
                                         </div>
                                     )
                                 })
@@ -74,15 +112,23 @@ export default function SeatsResume({ status, setStatus, seats, setSelectedSeats
                         <h1 className="text-center bg-darkest-gray p-4 rounded-[5px] lg:w-[65%] md:w-[75%] w-[80%] lg:mb-0 mb-6 font-bold">Resumen de Pago</h1>
                         <div className="flex flex-col h-[100%] items-center justify-center gap-4 lg:gap-8">
                             <h1 className="text-center">Precio Asiento: ${seatPrice}CLP</h1>
-                            <h1 className="text-center">{seats.length} Asientos: ${seatPrice * seats.length}CLP</h1>
+                            <h1 className="text-center">{selectedSeats.length} Asientos: ${seatPrice * selectedSeats.length}CLP</h1>
                             <h1 className="text-center">IVA (19%): ${Math.round(total * iva)}CLP</h1>
                         </div>
                         <div className="flex flex-col items-center justify-center mt-auto">
                             <hr className="w-[85%] border-2 rounded-[3px] lg:mt-0 mt-6" />
                             <h1 className="mt-6 mb-6 font-bold">Total: ${Math.round(total + total * iva)}CLP</h1>
                             <div className="flex items-center justify-center gap-2">
-                                <Button func={() => { }} text="PAGAR" bg_color="bg-electric-blue" text_color="text-white" width="w-[50%]" height="40px" font_size="text-sm" />
-                                <Button func={() => setStatus(false)} text="CANCELAR" bg_color="bg-darkest-gray" text_color="text-white" width="w-[50%]" height="40px" font_size="text-sm" />
+                                {
+                                    loading ?
+                                        <Loader status={loading} setStatus={setLoading} fullScreen={false} />
+                                        :
+                                        <>
+                                            <Button func={() => handleConfirm()} text="PAGAR" bg_color="bg-electric-blue" text_color="text-white" width="w-[50%]" height="40px" font_size="text-sm" />
+                                            <Button func={() => setStatus(false)} text="CANCELAR" bg_color="bg-darkest-gray" text_color="text-white" width="w-[50%]" height="40px" font_size="text-sm" />
+                                        </>
+                                }
+
                             </div>
                         </div>
                     </div>

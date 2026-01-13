@@ -3,6 +3,7 @@
 import Seat from "./ui/seat";
 import Button from "./ui/button";
 import SeatsResume from "./seatsResume";
+import Loader from "./ui/loader";
 
 import SeatTypes from "../types/seat";
 
@@ -14,16 +15,20 @@ export default function SeatsSelection({ show }: any) {
   const [seats, setSeats] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState<SeatTypes[]>([]);
   const [status, setStatus] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const getSeats = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"}/api/seats/getAll`)
+      setLoading(true);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"}/api/seats/getAll`, { cache: "no-store" })
       if (response.ok) {
         const data = await response.json()
         setSeats(data)
       }
     } catch (error) {
       console.log(error)
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -47,6 +52,7 @@ export default function SeatsSelection({ show }: any) {
     <>
       <div className="mt-8">
         <div className="w-full overflow-x-auto pb-4">
+          <Loader status={loading} setStatus={setLoading} fullScreen={false} />
           <div className="grid grid-cols-10 gap-3 min-w-[1140px] justify-center">
             {
               // si el ID de salon del asiento es igual al id de salon de la funcion, se muestra el asiento //
@@ -77,7 +83,7 @@ export default function SeatsSelection({ show }: any) {
         <div>
         </div>
       </div>
-      <SeatsResume status={status} setStatus={setStatus} seats={selectedSeats} setSelectedSeats={setSelectedSeats} show={show} />
+      <SeatsResume status={status} setStatus={setStatus} selectedSeats={selectedSeats} setSelectedSeats={setSelectedSeats} show={show} refreshSeats={getSeats} />
     </>
   )
 }

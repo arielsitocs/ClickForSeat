@@ -3,14 +3,17 @@
 import ShowTypes from '../types/show';
 
 import ActiveShow from './activeShow';
+import Loader from './ui/loader';
 
 import { useState, useEffect } from 'react';
 
 export default function activeFunctions({ setSelectedShow, selectedShow }: any) {
     const [activeFunctions, setActiveFunctions] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const getActiveFunctions = async () => {
         try {
+            setLoading(true);
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"}/api/shows/getAll`)
             if (response.ok) {
                 const data = await response.json()
@@ -18,6 +21,8 @@ export default function activeFunctions({ setSelectedShow, selectedShow }: any) 
             }
         } catch (error) {
             console.log(error)
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -33,6 +38,7 @@ export default function activeFunctions({ setSelectedShow, selectedShow }: any) 
                 <hr className='border-gray-text flex-1 border-2 rounded-[3px]' />
             </div>
             <div className='w-full'>
+                <Loader status={loading} setStatus={setLoading} fullScreen={false} />
                 {
                     activeFunctions.map((show: ShowTypes, index: number) => {
                         return (

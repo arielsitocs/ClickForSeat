@@ -14,7 +14,7 @@ CREATE TABLE seat (
 	seatId SERIAL PRIMARY KEY,
 	seatNumber INT NOT NULL,
 	seatPrice INT DEFAULT 5500 NOT NULL,
-	status VARCHAR DEFAULT 'Available' NOT NULL,
+	status VARCHAR DEFAULT 'available' NOT NULL,
 	saloonId INT,
 	FOREIGN KEY (saloonId) REFERENCES saloon(saloonId)
 );
